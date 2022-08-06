@@ -89,8 +89,10 @@ def steam_api(game):
     for genre in gameinfo['genres']:
         genres += '{},'.format(genre['description'])
     screens = ''
-    for screen in gameinfo['screenshots'][:3]:
+    raw_screen = []
+    for screen in gameinfo['screenshots']:
         screen = screen['path_thumbnail'].split('?')[0]
+        raw_screen.append(screen)
         screens += '[img]{}[/img]\n'.format(screen)
     screens = "[center][b][u]游戏截图[/u][/b][/center]\n" + "[center]" + screens + "[/center]"
     try:
@@ -106,11 +108,15 @@ def steam_api(game):
     raw_cover = gameinfo["header_image"].split("?")[0]
     cover = "[center][img]" + raw_cover + "[/img][/center]\n"
     about = gameinfo['about_the_game'] if gameinfo['about_the_game'] != '' else gameinfo['detailed_description']
+    raw_about = about
     about = "{}[center][b][u]关于游戏[/u][/b][/center]\n [b]发行日期[/b]：${}\n\n[b]商店链接[/b]：${}\n\n[b]游戏标签[/b]：${}\n\n{}".format(
         cover, date, store, genres, html2bb(about))
     about += recfield + trailer + screens
     return {'name': name, 'year': year, 'about': about, "raw_cover": raw_cover, "release_date": formate_date,
-            "store": store, "price": price}
+            "store": store, "price": price,
+            'raw': {'about': raw_about, 'release_date': formate_date,
+                    'date': date, 'screen': raw_screen,
+                    'name': name, 'cover': raw_cover, 'store': store}}
 
 
 def epic_api(game):
@@ -129,6 +135,7 @@ def epic_api(game):
             gameInfo = i
             break
     store = 'https://www.epicgames.com/store/zh-CN/p/{}'.format(game)
+    game_type = gameInfo['type']
     about = gameInfo['data']['about']['description'] if 'description' in gameInfo['data']['about'] else None
     about = gameInfo['data']['about']['shortDescription'] if not about else about
     short_about = gameInfo['data']['about']['shortDescription']
@@ -181,7 +188,7 @@ def epic_api(game):
             "release_date": release_date, "store": store, "price": None,
             'raw': {'about': raw_about, 'release_date': release_date,
                     'date': date, 'shortabout': short_about, 'screen': raw_screen,
-                    'name': raw_name, 'cover': raw_cover, 'store': store}}
+                    'name': raw_name, 'cover': raw_cover, 'store': store, 'game_type': game_type}}
 
 
 def indie_nova_api(game_url):
@@ -268,7 +275,8 @@ def count_comparison(data, peers, target='[/url]'):
 
 
 if __name__ == '__main__':
-    test = epic_api("https://store.epicgames.com/zh-CN/p/tannenberg")['raw']
+    # test = epic_api("https://store.epicgames.com/zh-CN/p/tannenberg")['raw']
+    test = steam_api('https://store.steampowered.com/app/619500/cyubeVR/')
     print(test)
     # headers = {
     #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0',
