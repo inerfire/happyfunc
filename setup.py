@@ -5,7 +5,7 @@ with open("requirements.txt") as fh:
 
 setup(
     name='happyfunc',
-    version='0.2.12',
+    version='0.2.13',
     url='https://github.com/inerfire/happyfunc',
     author='inerfire',
     author_email='happy@email.com',

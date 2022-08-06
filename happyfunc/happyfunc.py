@@ -80,6 +80,7 @@ def steam_api(game):
             formate_date = datetime.datetime.now().strftime("%Y-%m-%d")
     year = formate_date.split("-")[0]
     store = 'https://store.steampowered.com/app/{}'.format(game)
+    game_type = gameinfo['type']
     try:
         price = {"currency": gameinfo['price_overview']['currency'],
                  "amount": int(gameinfo['price_overview']['initial']) / 100}
@@ -116,7 +117,7 @@ def steam_api(game):
             "store": store, "price": price,
             'raw': {'about': raw_about, 'release_date': formate_date,
                     'date': date, 'screen': raw_screen,
-                    'name': name, 'cover': raw_cover, 'store': store}}
+                    'name': name, 'cover': raw_cover, 'store': store, 'game_type': game_type}}
 
 
 def epic_api(game):
@@ -135,7 +136,6 @@ def epic_api(game):
             gameInfo = i
             break
     store = 'https://www.epicgames.com/store/zh-CN/p/{}'.format(game)
-    game_type = gameInfo['type']
     about = gameInfo['data']['about']['description'] if 'description' in gameInfo['data']['about'] else None
     about = gameInfo['data']['about']['shortDescription'] if not about else about
     short_about = gameInfo['data']['about']['shortDescription']
@@ -188,7 +188,7 @@ def epic_api(game):
             "release_date": release_date, "store": store, "price": None,
             'raw': {'about': raw_about, 'release_date': release_date,
                     'date': date, 'shortabout': short_about, 'screen': raw_screen,
-                    'name': raw_name, 'cover': raw_cover, 'store': store, 'game_type': game_type}}
+                    'name': raw_name, 'cover': raw_cover, 'store': store}}
 
 
 def indie_nova_api(game_url):
