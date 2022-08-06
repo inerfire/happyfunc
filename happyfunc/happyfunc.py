@@ -115,7 +115,7 @@ def steam_api(game):
     about += recfield + trailer + screens
     return {'name': name, 'year': year, 'about': about, "raw_cover": raw_cover, "release_date": formate_date,
             "store": store, "price": price,
-            'raw': {'about': raw_about, 'release_date': formate_date,
+            'raw': {'about': raw_about, 'shortabout': gameinfo['short_description'], 'release_date': formate_date,
                     'date': date, 'screen': raw_screen,
                     'name': name, 'cover': raw_cover, 'store': store, 'game_type': game_type}}
 
